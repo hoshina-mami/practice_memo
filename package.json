@@ -1,0 +1,18 @@
+{
+  "name": "practice_memo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "webcontent/js/index.js",
+  "dependencies": {
+    "lodash": "^4.17.4",
+    "webpack": "^2.5.1"
+  },
+  "devDependencies": {
+    "webpack": "^2.5.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
