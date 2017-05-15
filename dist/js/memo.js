@@ -1982,42 +1982,56 @@ module.exports = getIteratorFn;
 "use strict";
 
 
-// src/components/memo_list.jsx
-// memo_listの要素
-var React = __webpack_require__(13);
-
-var MemoRow = __webpack_require__(183);
-
-var MemoList = React.createClass({
-    displayName: 'MemoList',
-
-    render: function render() {
-        var listNodes = this.props.data.map(function (memo, i) {
-            return (
-                // <li key={i} onClick={selectList}>
-                //     <span className="created_date">{memo.modified}</span>
-                //     <p className="title">{memo.title}</p>
-                //     <div className="btn_like"></div>
-                //     <div className="content hide">
-                //         <p className="text">{memo.body}</p>
-                //         <div className="content_buttons">
-                //             <button className="btn_delete">削 除</button>
-                //             <button className="btn_edit">編 集</button>
-                //         </div>
-                //     </div>
-                // </li>
-                React.createElement(MemoRow, { data: memo, key: i })
-            );
-        });
-        return React.createElement(
-            'ul',
-            { className: 'memo_list' },
-            listNodes
-        );
-    }
+Object.defineProperty(exports, "__esModule", {
+    value: true
 });
 
-module.exports = MemoList;
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(13);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _memo_row = __webpack_require__(183);
+
+var _memo_row2 = _interopRequireDefault(_memo_row);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } // src/components/memo_list.jsx
+
+
+var MemoList = function (_Component) {
+    _inherits(MemoList, _Component);
+
+    function MemoList() {
+        _classCallCheck(this, MemoList);
+
+        return _possibleConstructorReturn(this, (MemoList.__proto__ || Object.getPrototypeOf(MemoList)).call(this));
+    }
+
+    _createClass(MemoList, [{
+        key: 'render',
+        value: function render() {
+            var listNodes = this.props.data.map(function (memo, i) {
+                return _react2.default.createElement(_memo_row2.default, { data: memo, key: i });
+            });
+            return _react2.default.createElement(
+                'ul',
+                { className: 'memo_list' },
+                listNodes
+            );
+        }
+    }]);
+
+    return MemoList;
+}(_react.Component);
+
+exports.default = MemoList;
 
 /***/ }),
 /* 20 */
@@ -2026,23 +2040,22 @@ module.exports = MemoList;
 "use strict";
 
 
+var _react = __webpack_require__(13);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = __webpack_require__(97);
+
+var _memo_list = __webpack_require__(19);
+
+var _memo_list2 = _interopRequireDefault(_memo_list);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 // src/main.jsx
-var React = __webpack_require__(13);
-var ReactDom = __webpack_require__(97);
-
-var MemoList = __webpack_require__(19);
-
 var memoListData = [{ modified: '2017/04/15', title: 'たいとる1', body: '内容1', favorite: false }, { modified: '2017/05/15', title: 'たいとる2', body: '内容2', favorite: true }, { modified: '2017/05/15', title: 'たいとる2', body: '内容2', favorite: true }, { modified: '2017/05/15', title: 'たいとる2', body: '内容2', favorite: true }, { modified: '2017/05/15', title: 'たいとる2', body: '内容2', favorite: true }, { modified: '2017/05/15', title: 'たいとる2', body: '内容2', favorite: true }, { modified: '2017/05/15', title: 'たいとる2', body: '内容2', favorite: true }, { modified: '2017/05/15', title: 'たいとる2', body: '内容2', favorite: true }, { modified: '2017/06/15', title: 'たいとる3', body: '内容3', favorite: false }];
 
-var MemoBook = React.createClass({
-    displayName: 'MemoBook',
-
-    render: function render() {
-        return React.createElement(MemoList, { data: this.props.data });
-    }
-});
-
-ReactDom.render(React.createElement(MemoBook, { data: memoListData }), document.getElementById('memo_main'));
+(0, _reactDom.render)(_react2.default.createElement(_memo_list2.default, { data: memoListData }), document.getElementById('memo_main'));
 
 /***/ }),
 /* 21 */
@@ -22086,72 +22099,103 @@ module.exports = getNextDebugID;
 "use strict";
 
 
-// src/components/memo_row.jsx
-// memo_listの要素
-var React = __webpack_require__(13);
-
-var MemoRow = React.createClass({
-    displayName: 'MemoRow',
-
-    getDefaultProps: function getDefaultProps() {
-        return {
-            modified: '--',
-            title: 'NO TITLE',
-            body: ''
-        };
-    },
-    getInitialState: function getInitialState() {
-        return {
-            isShownDetail: false
-        };
-    },
-    render: function render() {
-        var memo = this.props.data;
-        return React.createElement(
-            'li',
-            { key: this.props.i, onClick: this.selectList },
-            React.createElement(
-                'span',
-                { className: 'created_date' },
-                memo.modified
-            ),
-            React.createElement(
-                'p',
-                { className: 'title' },
-                memo.title
-            ),
-            React.createElement('div', { className: 'btn_like' }),
-            React.createElement(
-                'div',
-                { className: 'content hide' },
-                React.createElement(
-                    'p',
-                    { className: 'text' },
-                    memo.body
-                ),
-                React.createElement(
-                    'div',
-                    { className: 'content_buttons' },
-                    React.createElement(
-                        'button',
-                        { className: 'btn_delete' },
-                        '\u524A \u9664'
-                    ),
-                    React.createElement(
-                        'button',
-                        { className: 'btn_edit' },
-                        '\u7DE8 \u96C6'
-                    )
-                )
-            )
-        );
-    },
-    selectList: function selectList(e) {
-        console.log(e.currentTarget);
-    }
+Object.defineProperty(exports, "__esModule", {
+    value: true
 });
 
-module.exports = MemoRow;
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(13);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } // src/components/memo_row.jsx
+// memo_listの要素
+
+
+var MemoRow = function (_Component) {
+    _inherits(MemoRow, _Component);
+
+    function MemoRow(props) {
+        _classCallCheck(this, MemoRow);
+
+        //bind
+        var _this = _possibleConstructorReturn(this, (MemoRow.__proto__ || Object.getPrototypeOf(MemoRow)).call(this, props));
+
+        _this.selectList = _this.selectList.bind(_this);
+
+        //init state
+        _this.state = {
+            isShownContent: false,
+            isFavorited: false
+        };
+        return _this;
+    }
+
+    _createClass(MemoRow, [{
+        key: 'render',
+        value: function render() {
+            var memo = this.props.data;
+            var contentClass = this.state.isShownContent ? '' : 'hide';
+            var favoriteClass = this.state.isFavorited ? 'btn_like_active' : 'btn_like';
+            return _react2.default.createElement(
+                'li',
+                { key: this.props.i, onClick: this.selectList },
+                _react2.default.createElement(
+                    'span',
+                    { className: 'created_date' },
+                    memo.modified
+                ),
+                _react2.default.createElement(
+                    'p',
+                    { className: 'title' },
+                    memo.title
+                ),
+                _react2.default.createElement('div', { className: favoriteClass }),
+                _react2.default.createElement(
+                    'div',
+                    { className: contentClass },
+                    _react2.default.createElement(
+                        'p',
+                        { className: 'text' },
+                        memo.body
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'content_buttons' },
+                        _react2.default.createElement(
+                            'button',
+                            { className: 'btn_delete' },
+                            '\u524A \u9664'
+                        ),
+                        _react2.default.createElement(
+                            'button',
+                            { className: 'btn_edit' },
+                            '\u7DE8 \u96C6'
+                        )
+                    )
+                )
+            );
+        }
+    }, {
+        key: 'selectList',
+        value: function selectList() {
+            // console.log(this.state.isShownContent);
+            this.setState({ isShownContent: this.state.isShownContent ? false : true });
+        }
+    }]);
+
+    return MemoRow;
+}(_react.Component);
+
+exports.default = MemoRow;
+;
 
 /***/ })
 /******/ ]);

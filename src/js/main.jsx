@@ -1,8 +1,9 @@
 // src/main.jsx
-var React = require('react');
-var ReactDom = require('react-dom');
+import React from 'react';
+import { Component } from 'react';
+import { render } from 'react-dom';
 
-var MemoList = require('./components/memo_list.jsx');
+import MemoList from './components/memo_list.jsx';
 
 var memoListData = [
     {modified: '2017/04/15', title: 'たいとる1', body: '内容1', favorite: false},
@@ -15,17 +16,8 @@ var memoListData = [
     {modified: '2017/06/15', title: 'たいとる3', body: '内容3', favorite: false},
 ];
 
-
-var MemoBook = React.createClass({
-    render: function() {
-        return (
-            <MemoList data={this.props.data} />
-        );
-    }
-});
-
-ReactDom.render(
-  <MemoBook data={memoListData} />,
+render(
+  <MemoList data={memoListData} />,
   document.getElementById('memo_main')
 );
 
