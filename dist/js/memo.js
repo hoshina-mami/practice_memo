@@ -9698,10 +9698,14 @@ var MemoRow = function (_Component) {
         _this.selectList = _this.selectList.bind(_this);
         _this.selectEdit = _this.selectEdit.bind(_this);
         _this.selectDelete = _this.selectDelete.bind(_this);
+        _this.selectCancel = _this.selectCancel.bind(_this);
+        _this.selectOk = _this.selectOk.bind(_this);
+        _this.checkShowContent = _this.checkShowContent.bind(_this);
 
         //init state
         _this.state = {
-            isShownContent: false
+            isShownContent: false,
+            isShownConfirm: false
         };
 
         _this.funcs = _this.props.funcs;
@@ -9711,11 +9715,12 @@ var MemoRow = function (_Component) {
     _createClass(MemoRow, [{
         key: 'render',
         value: function render() {
+            var _this2 = this;
+
             // console.log('MemoRow render');
-            var TEXT_DELETE = 'Delete';
-            var TEXT_EDIT = 'Edit';
             var memo = this.props.data;
             var contentClass = this.state.isShownContent ? '' : 'hide';
+
             return _react2.default.createElement(
                 'li',
                 { className: 'memo_row', key: this.props.i, onClick: this.selectList },
@@ -9741,16 +9746,48 @@ var MemoRow = function (_Component) {
                     _react2.default.createElement(
                         'div',
                         { className: 'content_buttons' },
-                        _react2.default.createElement(
-                            'button',
-                            { className: 'btn_delete', onClick: this.selectDelete },
-                            TEXT_DELETE
-                        ),
-                        _react2.default.createElement(
-                            'button',
-                            { className: 'btn_edit', onClick: this.selectEdit },
-                            TEXT_EDIT
-                        )
+                        function () {
+                            if (!_this2.state.isShownConfirm) {
+                                return _react2.default.createElement(
+                                    'div',
+                                    null,
+                                    _react2.default.createElement(
+                                        'button',
+                                        { className: 'btn_delete', onClick: _this2.selectDelete },
+                                        'Delete'
+                                    ),
+                                    _react2.default.createElement(
+                                        'button',
+                                        { className: 'btn_edit', onClick: _this2.selectEdit },
+                                        'Edit'
+                                    )
+                                );
+                            } else {
+                                return _react2.default.createElement(
+                                    'div',
+                                    null,
+                                    _react2.default.createElement(
+                                        'p',
+                                        null,
+                                        '\u3053\u306E\u8A18\u4E8B\u3092\u524A\u9664\u3057\u3066\u3082\u3044\u3044\u3067\u3059\u304B\uFF1F'
+                                    ),
+                                    _react2.default.createElement(
+                                        'div',
+                                        { className: 'confirm_buttons' },
+                                        _react2.default.createElement(
+                                            'button',
+                                            { className: 'btn_deletCancel', onClick: _this2.selectCancel },
+                                            'Calcel'
+                                        ),
+                                        _react2.default.createElement(
+                                            'button',
+                                            { className: 'btn_doDelet', onClick: _this2.selectOk },
+                                            'OK'
+                                        )
+                                    )
+                                );
+                            }
+                        }()
                     )
                 )
             );
@@ -9758,7 +9795,7 @@ var MemoRow = function (_Component) {
     }, {
         key: 'selectList',
         value: function selectList(e) {
-            if (e.target.className !== 'btn_like_active' && e.target.className !== 'btn_like') {
+            if (this.checkShowContent(e)) {
                 this.setState({ isShownContent: this.state.isShownContent ? false : true });
             } else {
                 e.preventDefault();
@@ -9767,13 +9804,31 @@ var MemoRow = function (_Component) {
     }, {
         key: 'selectEdit',
         value: function selectEdit(e) {
-            console.log(this.funcs);
             var memoObj = this.props.data;
             this.funcs.showEdit(memoObj);
         }
     }, {
         key: 'selectDelete',
-        value: function selectDelete(e) {}
+        value: function selectDelete() {
+            // this.funcs.showConfirm();
+            this.setState({ isShownConfirm: true });
+        }
+    }, {
+        key: 'selectCancel',
+        value: function selectCancel() {
+            this.setState({ isShownConfirm: false });
+        }
+    }, {
+        key: 'selectOk',
+        value: function selectOk() {
+            //TODO:API書いたら削除
+            console.log('TODO:do delete');
+        }
+    }, {
+        key: 'checkShowContent',
+        value: function checkShowContent(e) {
+            return e.target.className !== 'btn_like_active' && e.target.className !== 'btn_like' && e.target.className !== 'btn_delete' && e.target.className !== 'btn_deletCancel';
+        }
     }]);
 
     return MemoRow;
@@ -9809,6 +9864,10 @@ var _memo_edit = __webpack_require__(187);
 
 var _memo_edit2 = _interopRequireDefault(_memo_edit);
 
+var _memo_confirm = __webpack_require__(189);
+
+var _memo_confirm2 = _interopRequireDefault(_memo_confirm);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -9826,16 +9885,13 @@ var MemoBook = function (_Component) {
     function MemoBook(props) {
         _classCallCheck(this, MemoBook);
 
-        //bind
-        // this.showEdit = this.showEdit.bind(this);
-        // this.closeEdit = this.closeEdit.bind(this);
-
         //init state
         var _this = _possibleConstructorReturn(this, (MemoBook.__proto__ || Object.getPrototypeOf(MemoBook)).call(this, props));
 
         _this.state = {
             memoListData: memoListData,
             isShownEdit: false,
+            isShownConfirm: false,
             memoObj: {}
         };
 
@@ -9844,7 +9900,10 @@ var MemoBook = function (_Component) {
                 return _this.showEdit(obj);
             },
             closeEdit: function closeEdit() {
-                this.setState({ isShownEdit: false });
+                return _this.closeEdit();
+            },
+            showConfirm: function showConfirm() {
+                return _this.showConfirm();
             }
         };
         return _this;
@@ -9856,7 +9915,7 @@ var MemoBook = function (_Component) {
             return _react2.default.createElement(
                 'div',
                 null,
-                _react2.default.createElement(_memo_header2.default, null),
+                _react2.default.createElement(_memo_header2.default, { funcs: this.handleMemoFuncs }),
                 _react2.default.createElement(_memo_list2.default, { data: this.state.memoListData, funcs: this.handleMemoFuncs }),
                 _react2.default.createElement(_memo_edit2.default, { isShown: this.state.isShownEdit, memo: this.state.memoObj })
             );
@@ -9866,12 +9925,16 @@ var MemoBook = function (_Component) {
         value: function showEdit(obj) {
             this.setState({ isShownEdit: true, memoObj: obj });
         }
-        /*
-            // closeEdit() {
-            //     this.setState({isShownEdit: false });
-            // }
-        */
-
+    }, {
+        key: 'closeEdit',
+        value: function closeEdit() {
+            this.setState({ isShownEdit: false });
+        }
+    }, {
+        key: 'showConfirm',
+        value: function showConfirm() {
+            this.setState({ isShownConfirm: true });
+        }
     }]);
 
     return MemoBook;
@@ -22965,7 +23028,7 @@ var MemoEdit = function (_Component) {
                     }),
                     _react2.default.createElement('textarea', {
                         value: this.state.contentValue,
-                        onChange: this.handleChange
+                        onChange: this.handleContentChange
                     })
                 ),
                 _react2.default.createElement(
@@ -22987,7 +23050,8 @@ var MemoEdit = function (_Component) {
     }, {
         key: 'selectSave',
         value: function selectSave(e) {
-            console.log('save');
+            //TODO: API書いたら保存処理
+            console.log('TODO: do save');
         }
     }, {
         key: 'selectCancel',
@@ -23035,16 +23099,27 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } // src/components/memo_list.jsx
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } // src/components/memo_header.jsx
 
 
 var MemoHeader = function (_Component) {
     _inherits(MemoHeader, _Component);
 
-    function MemoHeader() {
+    function MemoHeader(props) {
         _classCallCheck(this, MemoHeader);
 
-        return _possibleConstructorReturn(this, (MemoHeader.__proto__ || Object.getPrototypeOf(MemoHeader)).apply(this, arguments));
+        //bind
+        var _this = _possibleConstructorReturn(this, (MemoHeader.__proto__ || Object.getPrototypeOf(MemoHeader)).call(this, props));
+
+        _this.selectNew = _this.selectNew.bind(_this);
+        _this.selectUpdate = _this.selectUpdate.bind(_this);
+
+        //init state
+        _this.state = {
+            isShownContent: false
+        };
+        _this.funcs = _this.props.funcs;
+        return _this;
     }
 
     _createClass(MemoHeader, [{
@@ -23055,15 +23130,28 @@ var MemoHeader = function (_Component) {
                 { className: 'memo_header' },
                 _react2.default.createElement(
                     'button',
-                    { className: 'btn_reload' },
-                    '\u30EA\u30ED\u30FC\u30C9'
+                    { className: 'btn_reload', onClick: this.selectUpdate },
+                    'Update'
                 ),
                 _react2.default.createElement(
                     'button',
-                    { className: 'btn_new' },
-                    '\u65B0\u898F\u767B\u9332'
+                    { className: 'btn_new', onClick: this.selectNew },
+                    'New'
                 )
-            );
+            )
+            /* TODO: isShownContentでヘッダーのUI変える*/
+            ;
+        }
+    }, {
+        key: 'selectNew',
+        value: function selectNew() {
+            this.funcs.showEdit(null);
+        }
+    }, {
+        key: 'selectUpdate',
+        value: function selectUpdate() {
+            //TODO:API書いたら同期処理
+            console.log('TODO:do update');
         }
     }]);
 
@@ -23071,6 +23159,109 @@ var MemoHeader = function (_Component) {
 }(_react.Component);
 
 exports.default = MemoHeader;
+
+/***/ }),
+/* 189 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(25);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } // src/components/memo_confirm.jsx
+
+
+var MemoConfirm = function (_Component) {
+    _inherits(MemoConfirm, _Component);
+
+    function MemoConfirm(props) {
+        _classCallCheck(this, MemoConfirm);
+
+        //bind
+        var _this = _possibleConstructorReturn(this, (MemoConfirm.__proto__ || Object.getPrototypeOf(MemoConfirm)).call(this, props));
+
+        _this.selectCancel = _this.selectCancel.bind(_this);
+        _this.selectOk = _this.selectOk.bind(_this);
+
+        //init state
+        _this.state = {
+            isShownConfirm: false
+        };
+        _this.funcs = _this.props.funcs;
+        return _this;
+    }
+
+    _createClass(MemoConfirm, [{
+        key: 'componentWillReceiveProps',
+        value: function componentWillReceiveProps(nextProps) {
+            if (this.state.isShownConfirm !== nextProps.isShown) {
+                this.setState({ isShownConfirm: nextProps.isShown });
+            }
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var contentClass = this.state.isShownConfirm ? 'memo_confirm' : 'memo_confirm hide';
+            return _react2.default.createElement(
+                'section',
+                { className: contentClass },
+                _react2.default.createElement(
+                    'div',
+                    { className: 'confirm_box' },
+                    _react2.default.createElement(
+                        'p',
+                        null,
+                        '\u3053\u306E\u8A18\u4E8B\u3092\u524A\u9664\u3057\u3066\u3082\u3044\u3044\u3067\u3059\u304B\uFF1F'
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'confirm_buttons' },
+                        _react2.default.createElement(
+                            'button',
+                            { className: 'btn_deletCancel', onClick: this.selectCancel },
+                            'Calcel'
+                        ),
+                        _react2.default.createElement(
+                            'button',
+                            { className: 'btn_doDelet', onClick: this.selectOk },
+                            'OK'
+                        )
+                    )
+                )
+            );
+        }
+    }, {
+        key: 'selectCancel',
+        value: function selectCancel() {
+            this.setState({ isShownConfirm: false });
+        }
+    }, {
+        key: 'selectOk',
+        value: function selectOk() {
+            //TODO:API書いたら削除
+            console.log('do delete');
+        }
+    }]);
+
+    return MemoConfirm;
+}(_react.Component);
+
+exports.default = MemoConfirm;
 
 /***/ })
 /******/ ]);

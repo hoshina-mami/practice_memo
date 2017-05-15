@@ -46,7 +46,7 @@ export default class MemoEdit extends Component {
                     />
                     <textarea 
                         value={this.state.contentValue}
-                        onChange={this.handleChange}
+                        onChange={this.handleContentChange}
                     />
                 </div>
                 <div className="edit_buttons">
@@ -58,7 +58,8 @@ export default class MemoEdit extends Component {
     }
 
     selectSave(e) {
-        console.log('save');
+        //TODO: API書いたら保存処理
+        console.log('TODO: do save');
     }
 
     selectCancel(e) {

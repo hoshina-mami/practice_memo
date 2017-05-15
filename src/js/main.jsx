@@ -6,6 +6,7 @@ import { render } from 'react-dom';
 import MemoHeader from './components/memo_header.jsx';
 import MemoList from './components/memo_list.jsx';
 import MemoEdit from './components/memo_edit.jsx';
+import MemoConfirm from './components/memo_confirm.jsx';
 
 var memoListData = [
     {modified: '2017/04/15', title: 'たいとる1', body: '内容1', favorite: false},
@@ -30,29 +31,25 @@ class MemoBook extends Component {
     constructor(props) {
         super(props);
 
-        //bind
-        // this.showEdit = this.showEdit.bind(this);
-        // this.closeEdit = this.closeEdit.bind(this);
-
         //init state
         this.state = {
             memoListData: memoListData,
             isShownEdit: false,
+            isShownConfirm: false,
             memoObj: {}
         };
 
         this.handleMemoFuncs = {
             showEdit: (obj) => this.showEdit(obj),
-            closeEdit: function() {
-                this.setState({isShownEdit: false });
-            }
+            closeEdit: () => this.closeEdit(),
+            showConfirm: () => this.showConfirm()
         }
     }
 
     render () {
         return (
             <div>
-                <MemoHeader />
+                <MemoHeader funcs={this.handleMemoFuncs} />
                 <MemoList data={this.state.memoListData} funcs={this.handleMemoFuncs} />
                 <MemoEdit isShown={this.state.isShownEdit} memo={this.state.memoObj} />
             </div>
@@ -62,12 +59,14 @@ class MemoBook extends Component {
     showEdit(obj) {
         this.setState({isShownEdit: true, memoObj: obj });
     }
-/*
-    // closeEdit() {
-    //     this.setState({isShownEdit: false });
-    // }
-*/
 
+    closeEdit() {
+        this.setState({isShownEdit: false });
+    }
+
+    showConfirm() {
+        this.setState({isShownConfirm: true});
+    }
 }
 
 render(
