@@ -12,35 +12,32 @@
             <rect id="myRect" height="100px" width="100px" fill="blue"/>
         </svg> -->
 
-      <section class="memo_wrapper">
-
-      <!-- メモホーム画面 -->
-      <section class="memo_home">
-          <header>
-              <button class="btn_reload">リロード</button>
-                  <button class="btn_new">新規登録</button>
-          </header>
-
-          <!-- メモ一覧 -->
-          <section class="memo_main" id="memo_main"></section>
-
-      </section>
-
-
-      <!-- マスク -->
-      <div class="mask hide"></div>
+      <section class="memo_wrapper" id="memo_wrapper">
 
       <!-- メモ編集画面 -->
-      <section class="memo_edit hide">
+      <!-- 
+        <div>
               <div class="edit_box">
                       <input type="text" class="edit_title" value="no-title"><br>
                       <textarea class="edit_body">memo</textarea>
               </div>
               <div class="edit_buttons" data-memoId="0">
-                      <button class="btn_editCancel">キャンセル</button>
-                      <button class="btn_post">保存</button>
+                      <button class="btn_editCancel">cancel</button>
+                      <button class="btn_post">save</button>
               </div>
+        </div>
       </section>
+      /*
+                <div className="edit_box">
+                      <input type="text" className="edit_title" value="no-title">
+                      <textarea className="edit_body">memo</textarea>
+                </div>
+                <div className="edit_buttons" data-memoId="0">
+                      <input className="btn_editCancel" onClick={this.selectCancel}>cancel</input>
+                      <input className="btn_post"  onClick={this.selectSave}>save</input>
+                </div>
+                */
+                 -->
       <!-- /メモ編集画面 -->
 
       <!-- メモ削除確認画面 -->

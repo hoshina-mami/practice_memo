@@ -110,74 +110,69 @@ select {
 
 /* レイアウト
 ------------------------------------------------------------------ */
+html, body {
+  height: 100%; }
+
 body {
   -webkit-text-size-adjust: none;
-  font-size: 30px;
+  font-size: 40px;
   font-family: Verdana, Geneva, sans-serif; }
 
 .memo_wrapper {
   position: relative;
   color: #222;
-  font-size: 100%; }
+  height: 100%;
+  overflow: scroll; }
 
 /* ホーム画面
 ------------------------------------------------------------------ */
-.memo_home {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  min-height: 100vh;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column; }
-  .memo_home header {
-    width: 100%;
-    height: 150px;
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(1, #faa), color-stop(0, #fccad1));
-    border-bottom: 2px solid #ea9e9e;
-    padding-top: 20px; }
+.memo_header {
+  width: 100%;
+  height: 150px;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(1, #faa), color-stop(0, #fccad1));
+  border-bottom: 2px solid #ea9e9e;
+  padding-top: 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100; }
 
 /* メモ一覧 */
 .memo_main {
-  -webkit-box-flex: 1;
-      -ms-flex: 1;
-          flex: 1;
   margin: 0;
-  padding: 25px 0 10px;
-  background: #feedeb;
-  overflow: scroll;
-  clear: both; }
+  padding: 200px 0 10px; }
 
 .memo_list {
   padding-bottom: 0px; }
-  .memo_list li {
-    margin: 0 20px 25px;
-    padding: 15px;
-    min-height: 70px;
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(1, #fff), color-stop(0, #f9fafb));
-    border-top: 1px solid white;
-    border-radius: 12px;
-    position: relative;
-    -webkit-box-shadow: 1px 6px 12px -9px #999; }
-    .memo_list li .created_date {
-      color: #666; }
-    .memo_list li .title {
-      width: 480px;
-      color: #353535;
-      font-size: 120%;
-      font-weight: bold;
-      margin: 15px 0 10px; }
-    .memo_list li .text {
-      margin: 15px 0;
-      padding: 15px 0;
-      color: #353535;
-      font-size: 110%;
-      line-height: 1.6em;
-      border-top: dotted 3px #eee;
-      border-bottom: dotted 3px #eee; }
-    .memo_list li .content_buttons {
-      text-align: center; }
+
+.memo_row {
+  margin: 0 20px 25px;
+  padding: 15px;
+  min-height: 70px;
+  background: #FFF;
+  border: 1px solid #bbb;
+  border-radius: 12px;
+  position: relative; }
+  .memo_row .created_date {
+    display: inline-block;
+    color: #666;
+    font-size: 34px; }
+  .memo_row .title {
+    width: 480px;
+    color: #353535;
+    font-size: 40px;
+    font-weight: bold;
+    margin: 15px 0 10px; }
+  .memo_row .text {
+    margin: 15px 0;
+    padding: 15px 0;
+    color: #353535;
+    font-size: 40px;
+    line-height: 1.6em;
+    border-top: dotted 3px #eee;
+    border-bottom: dotted 3px #eee; }
+  .memo_row .content_buttons {
+    text-align: center; }
 
 /* テキストアラート
 ------------------------------------------------------------------ */
@@ -204,29 +199,18 @@ body {
 
 /* 編集画面
 ------------------------------------------------------------------ */
-.mask {
-  background-color: #000;
-  opacity: 0.6;
-  width: 640px;
-  height: 1020px;
-  position: absolute;
-  top: 0;
-  left: 0; }
-
 .memo_edit {
-  width: 640px;
+  width: 100%;
+  height: 100%;
   position: absolute;
-  top: 30px;
-  left: 0; }
+  top: 150px;
+  left: 0;
+  background-color: white;
+  overflow: hidden; }
 
 .edit_box {
-  width: 540px;
   margin: 0 auto;
-  background-color: white;
-  padding: 40px 20px;
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
-  -webkit-box-shadow: 0px -1px 12px #222; }
+  padding: 50px 20px; }
 
 /* フォーム部品 */
 .edit_box input {
@@ -238,18 +222,13 @@ body {
 
 .edit_box textarea {
   width: 97%;
-  height: 400px;
-  font-size: 120%;
+  height: 700px;
+  font-size: 40px;
   border: 1px solid #ccc; }
 
 .edit_buttons {
-  width: 540px;
   margin: 0 auto;
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #fccad1), color-stop(1, #faa));
   padding: 20px;
-  border-bottom-left-radius: 12px;
-  border-bottom-right-radius: 12px;
-  -webkit-box-shadow: 0px 4px 7px #222;
   text-align: center; }
 
 /* 削除確認画面
@@ -295,7 +274,7 @@ body {
 /* リロードボタン */
 .btn_reload {
   display: inline-block;
-  width: 160px;
+  width: 200px;
   height: 80px;
   color: white;
   font-size: 100%;
@@ -309,25 +288,10 @@ body {
   float: left;
   margin-left: 20px; }
 
-/* キャンセルボタン */
+/* 実行・キャンセルボタン */
 .btn_delete,
 .btn_editCancel,
-.btn_deletCancel {
-  display: inline-block;
-  width: 200px;
-  height: 55px;
-  color: #bbb;
-  font-size: 110%;
-  font-weight: bold;
-  text-shadow: -1px -1px 1px #555, 1px 1px 1px #fff;
-  margin: 0 auto;
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0.6, #ddd), color-stop(0, #eee));
-  border: 1px solid #ccc;
-  border-bottom: 2px solid #aaa;
-  border-radius: 8px;
-  margin-right: 30px; }
-
-/* 実行ボタン */
+.btn_deletCancel,
 .btn_edit,
 .btn_post,
 .btn_doDelet {
@@ -335,17 +299,16 @@ body {
   width: 200px;
   height: 55px;
   color: #bbb;
-  font-size: 110%;
+  font-size: 40px;
   font-weight: bold;
-  text-shadow: -1px -1px 1px #555, 1px 1px 1px #fff;
   margin: 0 auto;
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0.6, #ddd), color-stop(0, #eee));
-  border: 1px solid #ccc;
-  border-bottom: 2px solid #aaa;
-  border-radius: 8px; }
+  border: 1px solid #bbb;
+  border-radius: 8px;
+  margin-right: 30px; }
 
+/* ボタン */
 /* ♡ */
-.memo_list li .btn_like {
+.btn_like {
   width: 60px;
   height: 50px;
   position: absolute;
@@ -359,7 +322,7 @@ body {
   top: 0;
   width: 30px;
   height: 48px;
-  background: #ddd;
+  background: #bbb;
   border-radius: 50px 50px 0 0;
   -webkit-transform: rotate(-45deg);
   -webkit-transform-origin: 0 100%; }
@@ -370,7 +333,7 @@ body {
   -webkit-transform-origin: 100% 100%; }
 
 /* ♥ */
-.memo_list li .btn_like_active {
+.btn_like_active {
   width: 60px;
   height: 50px;
   position: absolute;

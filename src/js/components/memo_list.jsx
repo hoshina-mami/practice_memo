@@ -9,15 +9,19 @@ export default class MemoList extends Component {
     }
 
     render() {
+        // console.log('MemoList render');
+        const funcs = this.props.funcs;
         var listNodes = this.props.data.map(function (memo, i,) {
             return (
-                <MemoRow data={memo} key={i} />
+                <MemoRow data={memo} funcs={funcs} key={i} />
             )
         });
         return (
-            <ul className="memo_list">
-                {listNodes}
-            </ul>
+            <section className="memo_main" id="memo_main">
+                <ul className="memo_list">
+                    {listNodes}
+                </ul>
+            </section>
         );
     }
 }
