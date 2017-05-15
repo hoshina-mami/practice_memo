@@ -1,13 +1,61 @@
 <!-- dist/index.html -->
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    <title>Hello React</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script src="js/memo.js"></script>
-  </body>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+        <title>Hello React</title>
+    </head>
+    <body>
+        <!-- <div id="app"></div>
+        <svg height="1000px" width="1000px">
+            <rect id="myRect" height="100px" width="100px" fill="blue"/>
+        </svg> -->
+
+      <section class="memo_wrapper">
+
+      <!-- メモホーム画面 -->
+      <section class="memo_home">
+          <header>
+              <button class="btn_reload">リロード</button>
+                  <button class="btn_new">新規登録</button>
+          </header>
+
+          <!-- メモ一覧 -->
+          <section class="memo_main" id="memo_main"></section>
+
+      </section>
+
+
+      <!-- マスク -->
+      <div class="mask hide"></div>
+
+      <!-- メモ編集画面 -->
+      <section class="memo_edit hide">
+              <div class="edit_box">
+                      <input type="text" class="edit_title" value="no-title"><br>
+                      <textarea class="edit_body">memo</textarea>
+              </div>
+              <div class="edit_buttons" data-memoId="0">
+                      <button class="btn_editCancel">キャンセル</button>
+                      <button class="btn_post">保存</button>
+              </div>
+      </section>
+      <!-- /メモ編集画面 -->
+
+      <!-- メモ削除確認画面 -->
+      <section class="memo_confirm" style="display:none;">
+              <div class="confirm_box">
+                      <p>この記事を削除してもいいですか？</p>
+                      <div class="confirm_buttons" data-memoId="">
+                              <button class="btn_deletCancel">キャンセル</button>
+                              <button class="btn_doDelet">削除</button>
+                      </div>
+              </div>
+      </section>
+      <!-- /メモ削除確認画面 -->
+
+      </section><!-- /memo_wrapper -->
+      <script src="js/memo.js"></script>
+    </body>
 </html>
