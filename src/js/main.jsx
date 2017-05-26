@@ -2,29 +2,18 @@
 import React from 'react';
 import { Component } from 'react';
 import { render } from 'react-dom';
+import request from 'superagent';
 
 import MemoHeader from './components/memo_header.jsx';
 import MemoList from './components/memo_list.jsx';
 import MemoEdit from './components/memo_edit.jsx';
 import MemoConfirm from './components/memo_confirm.jsx';
+import MemoApi from './memo_api.js';
 
-var memoListData = [
-    {modified: '2017/04/15', title: 'たいとる1', body: '内容1', favorite: false},
-    {modified: '2017/05/15', title: 'たいとる2', body: '内容2', favorite: true},
-    {modified: '2017/05/15', title: 'たいとる2', body: '内容2', favorite: true},
-    {modified: '2017/05/15', title: 'たいとる2', body: '内容2', favorite: true},
-    {modified: '2017/05/15', title: 'たいとる2', body: '内容2', favorite: true},
-    {modified: '2017/05/15', title: 'たいとる2', body: '内容2', favorite: true},
-    {modified: '2017/05/15', title: 'たいとる2', body: '内容2', favorite: true},
-    {modified: '2017/05/15', title: 'たいとる2', body: '内容2', favorite: true},
-    {modified: '2017/06/15', title: 'たいとる3', body: '内容3', favorite: false},
-    {modified: '2017/06/15', title: 'たいとる3', body: '内容3', favorite: false},
-    {modified: '2017/06/15', title: 'たいとる3', body: '内容3', favorite: false},
-    {modified: '2017/06/15', title: 'たいとる3', body: '内容3', favorite: false},
-    {modified: '2017/06/15', title: 'たいとる3', body: '内容3', favorite: false},
-    {modified: '2017/06/15', title: 'たいとる3', body: '内容3', favorite: false},
-    {modified: '2017/06/15', title: 'たいとる3', body: '内容3', favorite: false},
-];
+
+var memoListData = [];
+
+var memoApi = null;
 
 class MemoBook extends Component {
 
@@ -33,7 +22,7 @@ class MemoBook extends Component {
 
         //init state
         this.state = {
-            memoListData: memoListData,
+            memoListData: this.props.data,
             isShownEdit: false,
             isShownConfirm: false,
             memoObj: {}
@@ -69,10 +58,24 @@ class MemoBook extends Component {
     }
 }
 
-render(
-    <MemoBook />,
-    document.getElementById('memo_wrapper')
-);
+
+//init
+document.addEventListener('DOMContentLoaded', function() {
+    //メモ一覧を取得
+    memoApi = memoApi || new MemoApi();
+
+    memoApi
+        .getMemoList()
+        .then(
+            (data) => {
+                render(
+                    <MemoBook data={data}/>,
+                    document.getElementById('memo_wrapper')
+                )
+            }
+        );
+});
+
 
 //debug
 window.Perf = require('react-addons-perf');

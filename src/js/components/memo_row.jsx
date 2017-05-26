@@ -34,11 +34,15 @@ export default class MemoRow extends Component {
 
         return (
             <li className='memo_row' key={this.props.i} onClick={this.selectList}>
-                <span className="created_date">{memo.modified}</span>
+                <span className="created_date">{memo.date}</span>
                 <p className="title">{memo.title}</p>
                 <BtnFavorite data={memo.favorite} />
                 <div className={contentClass}>
-                    <p className="text">{memo.body}</p>
+                    <p className="text">
+                        {memo.content.split('\n').map(function(line) {
+                            return (<span className="d_block" key={line.toString()}>{line}</span>);
+                        })}
+                    </p>
                     <div className="content_buttons">
                         {(() => {
                             if (!this.state.isShownConfirm) {

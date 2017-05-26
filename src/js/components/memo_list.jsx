@@ -11,7 +11,7 @@ export default class MemoList extends Component {
     render() {
         // console.log('MemoList render');
         const funcs = this.props.funcs;
-        var listNodes = this.props.data.map(function (memo, i,) {
+        var listNodes = this.props.data.map(function (memo, i) {
             return (
                 <MemoRow data={memo} funcs={funcs} key={i} />
             )

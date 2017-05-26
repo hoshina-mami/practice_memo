@@ -7,6 +7,7 @@
     "lodash": "^4.17.4",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
+    "superagent": "^3.5.2",
     "webpack": "^2.5.1"
   },
   "devDependencies": {

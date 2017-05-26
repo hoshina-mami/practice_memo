@@ -13,12 +13,11 @@ export default class BtnFavorite extends Component {
         //init state
         this.state = {
             isFavorited: props.data
-        }; 
+        };
     }
 
     render() {
-        // console.log('BtnFavorite render');
-        var favoriteClass = this.state.isFavorited ? 'btn_like_active' : 'btn_like';
+        var favoriteClass = this.state.isFavorited == true ? 'btn_like_active' : 'btn_like';
         return (
             <div className={favoriteClass} onClick={this.selectHeart}></div>
         )

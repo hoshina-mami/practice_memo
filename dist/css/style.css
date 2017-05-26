@@ -108,6 +108,9 @@ select {
 .hide {
   display: none; }
 
+.d_block {
+  display: block; }
+
 /* レイアウト
 ------------------------------------------------------------------ */
 html, body {
