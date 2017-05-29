@@ -3,6 +3,7 @@
 import React from 'react';
 import { Component } from 'react';
 import BtnFavorite from './btn_favorite.jsx';
+import MemoApi from '../memo_api.js';
 
 export default class MemoEdit extends Component {
 
@@ -27,10 +28,9 @@ export default class MemoEdit extends Component {
         if (this.isShownEdit !== nextProps.isShown) {
             this.setState({isShownEdit: nextProps.isShown});
         }
-        if (nextProps.memo != undefined) {
-            this.setState({titleValue: nextProps.memo.title});
-            this.setState({contentValue: nextProps.memo.body});
-        }
+
+        this.setState({titleValue: nextProps.memo != null ? nextProps.memo.title : ''});
+        this.setState({contentValue: nextProps.memo != null ? nextProps.memo.content : ''});
     }
 
     render() {
@@ -44,26 +44,40 @@ export default class MemoEdit extends Component {
                       value={this.state.titleValue}
                       onChange={this.handleTitleChange}
                     />
-                    <textarea 
+                    <textarea
                         value={this.state.contentValue}
                         onChange={this.handleContentChange}
                     />
                 </div>
                 <div className="edit_buttons">
                       <button className="btn_editCancel" onClick={this.selectCancel}>cancel</button>
-                      <button className="btn_post">save</button>
+                      <button className="btn_post" onClick={this.selectSave}>save</button>
                 </div>
             </section>
         )
     }
 
-    selectSave(e) {
-        //TODO: API書いたら保存処理
-        console.log('TODO: do save');
+    selectSave() {
+        //TODO:入力値のチェック、エンコード
+        var data = {
+            memoid : this.props.memo != null ? this.props.memo.memo_id : 0,
+            title : this.state.titleValue,
+            content : this.state.contentValue,
+            favorite : this.props.memo != null ? this.props.memo.favorite : 0
+        }
+
+        var memoApi = new MemoApi();
+        memoApi
+            .postMemo(data)
+            .then(
+                (res) => {
+                    console.log(res);
+                }
+            );
     }
 
-    selectCancel(e) {
-        this.setState({memo: null, isShownEdit: false});
+    selectCancel() {
+        this.setState({isShownEdit: false});
     }
 
     handleTitleChange(e) {

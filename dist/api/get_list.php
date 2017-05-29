@@ -11,20 +11,24 @@ $conn = mysql_connect('mysql520.heteml.jp', '_mamimemo', 'Susm9rbMSnrKcMKA') or 
 mysql_select_db('_mamimemo') or die(mysql_error());
 
 // SQL クエリを実行
-$res = mysql_query('SELECT * from `memo`') or die(mysql_error());
+$res = mysql_query('SELECT * from `memo` order by `date` desc');
 
-// 結果を出力
-while ($row = mysql_fetch_array($res, MYSQL_NUM)) {
-    $oneData = array();
+if (mysql_num_rows($res) == 0) {
+    $error = 'クエリ失敗';
+    echo json_encode(compact('error'));
+} else {
+    // 結果を出力
+    while ($row = mysql_fetch_array($res, MYSQL_NUM)) {
+        $oneData = array();
 
-    for ($i = 0; $i < 5; $i++) {
-        $oneData = array_merge($oneData, array( $colums[$i] => $row[$i]));
+        for ($i = 0; $i < 5; $i++) {
+            $oneData = array_merge($oneData, array( $colums[$i] => $row[$i]));
+        }
+        $response[] = $oneData;
     }
-
-    $response[] = $oneData;
+    echo json_encode($response);
 }
 
-echo json_encode($response);
 
 // 結果セットを開放
 mysql_free_result($res);

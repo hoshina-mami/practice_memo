@@ -144,6 +144,10 @@ body {
 .memo_main {
   margin: 0;
   padding: 200px 0 10px; }
+  .memo_main .notice {
+    text-align: center;
+    color: #bbb;
+    padding-top: 20px; }
 
 .memo_list {
   padding-bottom: 0px; }

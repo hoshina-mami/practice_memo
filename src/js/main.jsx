@@ -2,18 +2,12 @@
 import React from 'react';
 import { Component } from 'react';
 import { render } from 'react-dom';
-import request from 'superagent';
 
 import MemoHeader from './components/memo_header.jsx';
 import MemoList from './components/memo_list.jsx';
 import MemoEdit from './components/memo_edit.jsx';
 import MemoConfirm from './components/memo_confirm.jsx';
 import MemoApi from './memo_api.js';
-
-
-var memoListData = [];
-
-var memoApi = null;
 
 class MemoBook extends Component {
 
@@ -62,14 +56,14 @@ class MemoBook extends Component {
 //init
 document.addEventListener('DOMContentLoaded', function() {
     //メモ一覧を取得
-    memoApi = memoApi || new MemoApi();
+    var memoApi = new MemoApi();
 
     memoApi
         .getMemoList()
         .then(
             (data) => {
                 render(
-                    <MemoBook data={data}/>,
+                    <MemoBook data={data['error'] ? null : data}/>,
                     document.getElementById('memo_wrapper')
                 )
             }

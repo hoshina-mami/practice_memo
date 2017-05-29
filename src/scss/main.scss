@@ -59,6 +59,12 @@ body {
 .memo_main {
     margin: 0;
     padding: 200px 0 10px;
+
+    .notice {
+        text-align: center;
+        color: $subColor;
+        padding-top: 20px;
+    }
 }
 
 .memo_list {
