@@ -28,18 +28,17 @@ export default class MemoRow extends Component {
     }
 
     render() {
-        // console.log('MemoRow render');
         const memo = this.props.data;
         const contentClass = this.state.isShownContent ? '' : 'hide';
 
         return (
             <li className='memo_row' key={this.props.i} onClick={this.selectList}>
                 <span className="created_date">{memo.date}</span>
-                <p className="title">{memo.title}</p>
+                <p className="title">{decodeURIComponent(memo.title)}</p>
                 <BtnFavorite data={memo.favorite} />
                 <div className={contentClass}>
                     <p className="text">
-                        {memo.content.split('\n').map(function(line) {
+                        {decodeURIComponent(memo.content).split('\n').map(function(line) {
                             return (<span className="d_block" key={line.toString()}>{line}</span>);
                         })}
                     </p>
@@ -80,7 +79,6 @@ export default class MemoRow extends Component {
     }
 
     selectDelete() {
-        // this.funcs.showConfirm();
         this.setState({isShownConfirm: true});
     }
 

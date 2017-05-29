@@ -12,6 +12,7 @@ export default class MemoEdit extends Component {
 
         //bind
         this.selectSave = this.selectSave.bind(this);
+        this.updateView = this.updateView.bind(this);
         this.selectCancel = this.selectCancel.bind(this);
         this.handleTitleChange = this.handleTitleChange.bind(this);
         this.handleContentChange = this.handleContentChange.bind(this);
@@ -25,10 +26,9 @@ export default class MemoEdit extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.isShownEdit !== nextProps.isShown) {
+        if (this.state.isShownEdit != nextProps.isShown) {
             this.setState({isShownEdit: nextProps.isShown});
         }
-
         this.setState({titleValue: nextProps.memo != null ? nextProps.memo.title : ''});
         this.setState({contentValue: nextProps.memo != null ? nextProps.memo.content : ''});
     }
@@ -58,11 +58,10 @@ export default class MemoEdit extends Component {
     }
 
     selectSave() {
-        //TODO:入力値のチェック、エンコード
         var data = {
             memoid : this.props.memo != null ? this.props.memo.memo_id : 0,
-            title : this.state.titleValue,
-            content : this.state.contentValue,
+            title : encodeURIComponent(this.state.titleValue),
+            content : encodeURIComponent(this.state.contentValue),
             favorite : this.props.memo != null ? this.props.memo.favorite : 0
         }
 
@@ -71,9 +70,16 @@ export default class MemoEdit extends Component {
             .postMemo(data)
             .then(
                 (res) => {
-                    console.log(res);
+                    this.updateView(res);
                 }
             );
+    }
+
+    updateView(data) {
+        if (data.memo_id == null || data.memo_id == undefined) { return; }
+
+        const funcs = this.props.funcs;
+        funcs.updateMemoList();
     }
 
     selectCancel() {

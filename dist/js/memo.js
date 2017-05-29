@@ -6739,6 +6739,7 @@ var MemoEdit = function (_Component) {
         var _this = _possibleConstructorReturn(this, (MemoEdit.__proto__ || Object.getPrototypeOf(MemoEdit)).call(this, props));
 
         _this.selectSave = _this.selectSave.bind(_this);
+        _this.updateView = _this.updateView.bind(_this);
         _this.selectCancel = _this.selectCancel.bind(_this);
         _this.handleTitleChange = _this.handleTitleChange.bind(_this);
         _this.handleContentChange = _this.handleContentChange.bind(_this);
@@ -6755,10 +6756,9 @@ var MemoEdit = function (_Component) {
     _createClass(MemoEdit, [{
         key: 'componentWillReceiveProps',
         value: function componentWillReceiveProps(nextProps) {
-            if (this.isShownEdit !== nextProps.isShown) {
+            if (this.state.isShownEdit != nextProps.isShown) {
                 this.setState({ isShownEdit: nextProps.isShown });
             }
-
             this.setState({ titleValue: nextProps.memo != null ? nextProps.memo.title : '' });
             this.setState({ contentValue: nextProps.memo != null ? nextProps.memo.content : '' });
         }
@@ -6802,18 +6802,29 @@ var MemoEdit = function (_Component) {
     }, {
         key: 'selectSave',
         value: function selectSave() {
-            //TODO:入力値のチェック、エンコード
+            var _this2 = this;
+
             var data = {
                 memoid: this.props.memo != null ? this.props.memo.memo_id : 0,
-                title: this.state.titleValue,
-                content: this.state.contentValue,
+                title: encodeURIComponent(this.state.titleValue),
+                content: encodeURIComponent(this.state.contentValue),
                 favorite: this.props.memo != null ? this.props.memo.favorite : 0
             };
 
             var memoApi = new _memo_api2.default();
             memoApi.postMemo(data).then(function (res) {
-                console.log(res);
+                _this2.updateView(res);
             });
+        }
+    }, {
+        key: 'updateView',
+        value: function updateView(data) {
+            if (data.memo_id == null || data.memo_id == undefined) {
+                return;
+            }
+
+            var funcs = this.props.funcs;
+            funcs.updateMemoList();
         }
     }, {
         key: 'selectCancel',
@@ -10524,7 +10535,6 @@ var MemoRow = function (_Component) {
         value: function render() {
             var _this2 = this;
 
-            // console.log('MemoRow render');
             var memo = this.props.data;
             var contentClass = this.state.isShownContent ? '' : 'hide';
 
@@ -10539,7 +10549,7 @@ var MemoRow = function (_Component) {
                 _react2.default.createElement(
                     'p',
                     { className: 'title' },
-                    memo.title
+                    decodeURIComponent(memo.title)
                 ),
                 _react2.default.createElement(_btn_favorite2.default, { data: memo.favorite }),
                 _react2.default.createElement(
@@ -10548,7 +10558,7 @@ var MemoRow = function (_Component) {
                     _react2.default.createElement(
                         'p',
                         { className: 'text' },
-                        memo.content.split('\n').map(function (line) {
+                        decodeURIComponent(memo.content).split('\n').map(function (line) {
                             return _react2.default.createElement(
                                 'span',
                                 { className: 'd_block', key: line.toString() },
@@ -10623,7 +10633,6 @@ var MemoRow = function (_Component) {
     }, {
         key: 'selectDelete',
         value: function selectDelete() {
-            // this.funcs.showConfirm();
             this.setState({ isShownConfirm: true });
         }
     }, {
@@ -10694,6 +10703,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } // src/main.jsx
 
 
+var memoApi;
+
 var MemoBook = function (_Component) {
     _inherits(MemoBook, _Component);
 
@@ -10719,6 +10730,9 @@ var MemoBook = function (_Component) {
             },
             showConfirm: function showConfirm() {
                 return _this.showConfirm();
+            },
+            updateMemoList: function updateMemoList() {
+                return _this.updateMemoList();
             }
         };
         return _this;
@@ -10732,7 +10746,7 @@ var MemoBook = function (_Component) {
                 null,
                 _react2.default.createElement(_memo_header2.default, { funcs: this.handleMemoFuncs }),
                 _react2.default.createElement(_memo_list2.default, { data: this.state.memoListData, funcs: this.handleMemoFuncs }),
-                _react2.default.createElement(_memo_edit2.default, { isShown: this.state.isShownEdit, memo: this.state.memoObj })
+                _react2.default.createElement(_memo_edit2.default, { isShown: this.state.isShownEdit, memo: this.state.memoObj, funcs: this.handleMemoFuncs })
             );
         }
     }, {
@@ -10750,6 +10764,16 @@ var MemoBook = function (_Component) {
         value: function showConfirm() {
             this.setState({ isShownConfirm: true });
         }
+    }, {
+        key: 'updateMemoList',
+        value: function updateMemoList() {
+            var _this2 = this;
+
+            memoApi.getMemoList().then(function (data) {
+                _this2.setState({ memoListData: data });
+                _this2.setState({ isShownEdit: false });
+            });
+        }
     }]);
 
     return MemoBook;
@@ -10760,7 +10784,7 @@ var MemoBook = function (_Component) {
 
 document.addEventListener('DOMContentLoaded', function () {
     //メモ一覧を取得
-    var memoApi = new _memo_api2.default();
+    memoApi = new _memo_api2.default();
 
     memoApi.getMemoList().then(function (data) {
         (0, _reactDom.render)(_react2.default.createElement(MemoBook, { data: data['error'] ? null : data }), document.getElementById('memo_wrapper'));

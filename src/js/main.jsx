@@ -9,6 +9,8 @@ import MemoEdit from './components/memo_edit.jsx';
 import MemoConfirm from './components/memo_confirm.jsx';
 import MemoApi from './memo_api.js';
 
+var memoApi;
+
 class MemoBook extends Component {
 
     constructor(props) {
@@ -25,7 +27,8 @@ class MemoBook extends Component {
         this.handleMemoFuncs = {
             showEdit: (obj) => this.showEdit(obj),
             closeEdit: () => this.closeEdit(),
-            showConfirm: () => this.showConfirm()
+            showConfirm: () => this.showConfirm(),
+            updateMemoList: () => this.updateMemoList()
         }
     }
 
@@ -34,7 +37,7 @@ class MemoBook extends Component {
             <div>
                 <MemoHeader funcs={this.handleMemoFuncs} />
                 <MemoList data={this.state.memoListData} funcs={this.handleMemoFuncs} />
-                <MemoEdit isShown={this.state.isShownEdit} memo={this.state.memoObj} />
+                <MemoEdit isShown={this.state.isShownEdit} memo={this.state.memoObj} funcs={this.handleMemoFuncs} />
             </div>
         )
     }
@@ -50,13 +53,24 @@ class MemoBook extends Component {
     showConfirm() {
         this.setState({isShownConfirm: true});
     }
+
+    updateMemoList() {
+        memoApi
+        .getMemoList()
+        .then(
+            (data) => {
+                this.setState({memoListData: data});
+                this.setState({isShownEdit: false });
+            }
+        );
+    }
 }
 
 
 //init
 document.addEventListener('DOMContentLoaded', function() {
     //メモ一覧を取得
-    var memoApi = new MemoApi();
+    memoApi = new MemoApi();
 
     memoApi
         .getMemoList()

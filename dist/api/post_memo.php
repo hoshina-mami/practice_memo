@@ -40,7 +40,8 @@ if (!empty($_POST['title']) || !empty($_POST['content']) ) {
         // SQL クエリを実行
         $res = mysql_query("INSERT INTO `_mamimemo`.`memo` (`memo_id`, `date`, `title`, `content`, `favorite`) VALUES ($memoId, '$dateString', '$title', '$content', 0)");
         if(!$res) {
-            print_r('失敗');
+            $error = '書き込み失敗';
+            echo json_encode(compact('error'));
         }
     } else {
         //存在するmemo_idであれば更新
@@ -49,8 +50,12 @@ if (!empty($_POST['title']) || !empty($_POST['content']) ) {
 
     //書き込んだものを取得
     $result = mysql_query("SELECT * FROM `memo` WHERE `memo_id` = '$memoId'");
-    if (!$result) {
+    if (mysql_num_rows($result) == 0) {
+        $error = '書き込み後の読み出し失敗';
+        echo json_encode(compact('error'));
+    } else {
         while ($row = mysql_fetch_array($result, MYSQL_NUM)) {
+            $oneData = Array();
             for ($i = 0; $i < 5; $i++) {
                 $oneData = array_merge($oneData, array( $colums[$i] => $row[$i]));
             }
