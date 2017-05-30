@@ -6775,11 +6775,11 @@ var MemoEdit = function (_Component) {
                     _react2.default.createElement('input', {
                         type: 'text',
                         placeholder: 'Title',
-                        value: this.state.titleValue,
+                        value: decodeURIComponent(this.state.titleValue),
                         onChange: this.handleTitleChange
                     }),
                     _react2.default.createElement('textarea', {
-                        value: this.state.contentValue,
+                        value: decodeURIComponent(this.state.contentValue),
                         onChange: this.handleContentChange
                     })
                 ),

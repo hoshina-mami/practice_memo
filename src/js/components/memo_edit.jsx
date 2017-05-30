@@ -41,11 +41,11 @@ export default class MemoEdit extends Component {
                     <input
                       type="text"
                       placeholder="Title"
-                      value={this.state.titleValue}
+                      value={decodeURIComponent(this.state.titleValue)}
                       onChange={this.handleTitleChange}
                     />
                     <textarea
-                        value={this.state.contentValue}
+                        value={decodeURIComponent(this.state.contentValue)}
                         onChange={this.handleContentChange}
                     />
                 </div>
