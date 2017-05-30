@@ -1,3 +1,5 @@
+// @flow
+
 // src/main.jsx
 import React from 'react';
 import { Component } from 'react';
@@ -11,9 +13,26 @@ import MemoApi from './memo_api.js';
 
 var memoApi;
 
-class MemoBook extends Component {
+type Props = {
+    data: Object
+};
 
-    constructor(props) {
+type State = {
+    memoListData: Object,
+    isShownEdit: boolean,
+    isShownConfirm: boolean,
+    memoObj: Object
+};
+
+class MemoBook extends Component {
+    state: State;
+    handleMemoFuncs: Object;
+    showEdit: Function;
+    closeEdit: Function;
+    showConfirm: Function;
+    updateMemoList: Function;
+
+    constructor(props: Props) {
         super(props);
 
         //init state
@@ -25,7 +44,7 @@ class MemoBook extends Component {
         };
 
         this.handleMemoFuncs = {
-            showEdit: (obj) => this.showEdit(obj),
+            showEdit: (obj: Object) => this.showEdit(obj),
             closeEdit: () => this.closeEdit(),
             showConfirm: () => this.showConfirm(),
             updateMemoList: () => this.updateMemoList()
@@ -42,7 +61,7 @@ class MemoBook extends Component {
         )
     }
 
-    showEdit(obj) {
+    showEdit(obj: Object) {
         this.setState({isShownEdit: true, memoObj: obj });
     }
 
@@ -58,7 +77,7 @@ class MemoBook extends Component {
         memoApi
         .getMemoList()
         .then(
-            (data) => {
+            (data: Object) => {
                 this.setState({memoListData: data});
                 this.setState({isShownEdit: false });
             }
@@ -75,9 +94,9 @@ document.addEventListener('DOMContentLoaded', function() {
     memoApi
         .getMemoList()
         .then(
-            (data) => {
+            (data: Object) => {
                 render(
-                    <MemoBook data={data['error'] ? null : data}/>,
+                    <MemoBook data={data['error'] ? {} : data}/>,
                     document.getElementById('memo_wrapper')
                 )
             }

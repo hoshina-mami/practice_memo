@@ -1,3 +1,5 @@
+// @flow
+
 // src/components/memo_row.jsx
 // memo_listの要素
 import React from 'react';
@@ -5,9 +7,27 @@ import { Component } from 'react';
 import BtnFavorite from './btn_favorite.jsx';
 import MemoEdit from './memo_edit.jsx';
 
-export default class MemoRow extends Component {
+type Props = {
+    data: Object,
+    funcs: Object
+};
 
-    constructor(props) {
+type State = {
+    isShownContent: boolean,
+    isShownConfirm: boolean
+};
+
+export default class MemoRow extends Component {
+    state: State;
+    funcs: Object;
+    selectList: Function;
+    selectEdit: Function;
+    selectDelete: Function;
+    selectCancel: Function;
+    selectOk: Function;
+    checkShowContent: Function;
+
+    constructor(props: Props) {
         super(props);
 
         //bind
@@ -32,7 +52,7 @@ export default class MemoRow extends Component {
         const contentClass = this.state.isShownContent ? '' : 'hide';
 
         return (
-            <li className='memo_row' key={this.props.i} onClick={this.selectList}>
+            <li className='memo_row' key={memo.memoid} onClick={this.selectList}>
                 <span className="created_date">{memo.date}</span>
                 <p className="title">{decodeURIComponent(memo.title)}</p>
                 <BtnFavorite data={memo.favorite} />
@@ -65,7 +85,7 @@ export default class MemoRow extends Component {
         )
     }
 
-    selectList(e) {
+    selectList(e: Event) {
         if (this.checkShowContent(e)) {
             this.setState({isShownContent: this.state.isShownContent ? false : true });
         } else {
@@ -73,7 +93,7 @@ export default class MemoRow extends Component {
         }
     }
 
-    selectEdit(e) {
+    selectEdit(e: Event) {
         const memoObj = this.props.data;
         this.funcs.showEdit(memoObj);
     }
@@ -91,7 +111,7 @@ export default class MemoRow extends Component {
         console.log('TODO:do delete');
     }
 
-    checkShowContent(e) {
+    checkShowContent(e: Event) {
         return e.target.className !== 'btn_like_active'
             && e.target.className !== 'btn_like'
             && e.target.className !== 'btn_delete'

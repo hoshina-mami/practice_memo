@@ -1,10 +1,25 @@
+// @flow
+
 // src/components/memo_confirm.jsx
 import React from 'react';
 import { Component } from 'react';
 
+type Props = {
+    isShown: boolean,
+    funcs: Object
+};
+
+type State = {
+    isShownConfirm: boolean
+};
 
 export default class MemoConfirm extends Component {
-    constructor(props) {
+    state: State;
+    funcs: Object;
+    selectCancel: Function;
+    selectOk: Function;
+
+    constructor(props: Props) {
         super(props);
 
         //bind
@@ -18,7 +33,7 @@ export default class MemoConfirm extends Component {
         this.funcs = this.props.funcs;
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps: Props) {
         if (this.state.isShownConfirm !== nextProps.isShown) {
             this.setState({isShownConfirm: nextProps.isShown});
         }

@@ -1,3 +1,5 @@
+// @flow
+
 // src/components/memo_list.jsx
 import React from 'react';
 import { Component } from 'react';
@@ -10,7 +12,7 @@ export default class MemoList extends Component {
 
     render() {
         const funcs = this.props.funcs;
-        if (this.props.data != null) {
+        if (this.props.data != {}) {
             var listNodes = this.props.data.map(function (memo, i) {
                 return (
                     <MemoRow data={memo} funcs={funcs} key={i} />
