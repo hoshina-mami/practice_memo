@@ -1,13 +1,32 @@
-// src/components/memo_row.jsx
-// memo_listの要素
+// @flow
+
 import React from 'react';
 import { Component } from 'react';
 import BtnFavorite from './btn_favorite.jsx';
 import MemoApi from '../memo_api.js';
 
-export default class MemoEdit extends Component {
+type Props = {
+    isShown: boolean,
+    memo: Object,
+    funcs: Object
+};
 
-    constructor(props) {
+type State = {
+    isShownEdit: boolean,
+    titleValue: string,
+    contentValue: string
+};
+
+export default class MemoEdit extends Component {
+    state: State;
+
+    selectSave: Function;
+    updateView: Function;
+    selectCancel: Function;
+    handleTitleChange: Function;
+    handleContentChange: Function;
+
+    constructor(props: Props) {
         super(props);
 
         //bind
@@ -25,7 +44,7 @@ export default class MemoEdit extends Component {
         };
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps: Props) {
         if (this.state.isShownEdit != nextProps.isShown) {
             this.setState({isShownEdit: nextProps.isShown});
         }
@@ -75,7 +94,7 @@ export default class MemoEdit extends Component {
             );
     }
 
-    updateView(data) {
+    updateView(data: Object) {
         if (data.memo_id == null || data.memo_id == undefined) { return; }
 
         const funcs = this.props.funcs;
@@ -86,11 +105,17 @@ export default class MemoEdit extends Component {
         this.setState({isShownEdit: false});
     }
 
-    handleTitleChange(e) {
-        this.setState({titleValue: e.target.value});
+    handleTitleChange(e: Event) {
+        const target = e.target;
+        if (target instanceof HTMLInputElement) {
+            this.setState({titleValue: target.value});
+          }
     }
 
-    handleContentChange(e) {
-        this.setState({contentValue: e.target.value});
+    handleContentChange(e: Event) {
+        const target = e.target;
+        if (target instanceof HTMLInputElement) {
+            this.setState({contentValue: target.value});
+        }
     }
 };

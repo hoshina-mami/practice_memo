@@ -1,3 +1,5 @@
+// @flow
+
 import request from 'superagent';
 
 //メモ一覧を取得
@@ -30,7 +32,7 @@ export default class MemoApi {
      * @param  {Object}  data
      * @return {Promise}
      */
-    postMemo(data) {
+    postMemo(data: Object) {
         return new Promise(function(resolve, reject) {
             request
                 .post(URL_POST_MEMO)

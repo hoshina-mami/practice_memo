@@ -1,10 +1,25 @@
+// @flow
+
 // src/components/memo_header.jsx
 import React from 'react';
 import { Component } from 'react';
 
+type Props = {
+    // memo: Object,
+    funcs: Object
+};
+
+type State = {
+    isShownContent: boolean
+};
 
 export default class MemoHeader extends Component {
-    constructor(props) {
+    state: State;
+    funcs: Object;
+    selectNew: Function;
+    selectUpdate: Function;
+
+    constructor(props: Props) {
         super(props);
 
         //bind

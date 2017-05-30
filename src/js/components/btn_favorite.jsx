@@ -1,10 +1,22 @@
+// @flow
+
 // src/components/btn_favorite.jsx
 import React from 'react';
 import { Component } from 'react';
 
-export default class BtnFavorite extends Component {
+type Props = {
+    data: boolean
+};
 
-    constructor(props) {
+type State = {
+    isFavorited: boolean
+};
+
+export default class BtnFavorite extends Component {
+    state: State;
+    selectHeart: Function;
+
+    constructor(props: Props) {
         super(props);
 
         //bind
@@ -12,7 +24,7 @@ export default class BtnFavorite extends Component {
 
         //init state
         this.state = {
-            isFavorited: props.data
+            isFavorited: props.data != null ? props.data : false
         };
     }
 
@@ -23,7 +35,7 @@ export default class BtnFavorite extends Component {
         )
     }
 
-    selectHeart(e) {
+    selectHeart(e: Event) {
         this.setState({isFavorited: this.state.isFavorited ? false : true });
     }
 };
